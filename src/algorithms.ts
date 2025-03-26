@@ -8,8 +8,9 @@ function shuffleArray(arr: number[]) {
   }
 }
 
-function initCommunity(typeCount: number, n: number, vacancyCount = 12) {
+function initCommunity(typeCount: number, n: number) {
   const length = typeCount > 0 ? n**2: 0;
+  const vacancyCount = Math.round(length  * .1);
   const arr = Array.from({ length }, (_, i) => i < vacancyCount ? 0 : i % typeCount + 1);
   shuffleArray(arr);
   const matrix: number[][] = [];
@@ -76,7 +77,7 @@ function runSchellingModel(
   community: number[][],
   threshold: number
 ) {
-  const vacancyCount = community.flat().filter(value => value === 0).length; // equilibrium
+  const vacancyCount = Math.round(community.length**2 * .1); // equilibrium
   const snapshots = [JSON.parse(JSON.stringify(community))];
   let diffs = relocateAndCountDiffs(community, threshold);
   while (diffs > vacancyCount) {
