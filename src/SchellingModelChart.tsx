@@ -18,17 +18,11 @@ type TypeLocMap = {
 
 const colors = [
   "#e5e7eb",
-  "#05df72",
   "#51a2ff",
-  "#ff8904",
-  "#00d492",
-  "#7c86ff",
   "#ffba00",
   "#00d5be",
-  "#a684ff",
-  "#fcc800",
-  "#00d3f2",
-  "#c27aff",
+  "#ff8904",
+  "#7c86ff",
 ];
 
 function maxtrixToTypeLocMap(matrix: number[][]) {
