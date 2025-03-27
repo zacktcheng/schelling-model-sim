@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { reAssignTypes, initCommunity, runSchellingModel } from './algorithms.ts';
 import FormControl from './FormControl.tsx';
 import SchellingModelChart from './SchellingModelChart.tsx';
-import githubMark from '../src/github-mark.svg'
+import githubMark from './github-mark.svg';
 
 // https://medium.com/data-science/schellings-model-of-racial-segregation-4852fad06c13
 function App() {

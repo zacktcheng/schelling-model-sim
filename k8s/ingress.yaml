@@ -7,8 +7,8 @@ metadata:
     cert-manager.io/issuer: azure-issuer
     spec.ingressClassName: nginx
     kubernetes.io/tls-acme: 'true'
-    meta.helm.sh/release-name: azure-key-vault-ca
-    meta.helm.sh/release-namespace: azure-key-vault-ca
+    meta.helm.sh/release-name: schelling-model-sim
+    meta.helm.sh/release-namespace: zack-dev
 spec:
   tls:
     - hosts:
