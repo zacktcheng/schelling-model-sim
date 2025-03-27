@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: zack-dev
+  name: schelling-model-sim-ingress
+  annotations:
+    cert-manager.io/issuer: azure-issuer
+    spec.ingressClassName: nginx
+    kubernetes.io/tls-acme: 'true'
+    meta.helm.sh/release-name: azure-key-vault-ca
+    meta.helm.sh/release-namespace: azure-key-vault-ca
+spec:
+  tls:
+    - hosts:
+        - zack-dev.dev.iotdev-westpharma.com
+        - '*.zack-dev.dev.iotdev-westpharma.com'
+      secretName: https-tls
+  rules:
+  - host: zack-dev.dev.iotdev-westpharma.com
+    http:
+      paths:
+      - path: /schelling-model-sim
+        pathType: Prefix
+        backend:
+          service:
+            name: schelling-model-sim-service
+            port:
+              number: 80

@@ -1,0 +1,15 @@
+bases:
+  - ./helmfile-default.yaml
+repositories:
+  - name: iot-platform-dev
+    url: iotplatformdev.azurecr.io
+    oci: true
+releases:
+  - chart: iot-platform-dev/cert-issuer
+    name: cert-issuer
+    namespace: zack-dev
+    secrets:
+      - ./cert-issuer/secrets.yaml
+    values:
+      - ./cert-issuer/values.yaml
+    version: 0.2.83

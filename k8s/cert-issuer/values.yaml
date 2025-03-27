@@ -1,0 +1,12 @@
+letsencrypt:
+  email: "john.lin@westpharma.com" # required
+  certChain: "ISRG Root X1"  
+  solvers:
+    dns01:
+      azureDNS:
+          # name: record-updater
+          clientID: 65d7e340-7c84-4399-b72e-bf2b58ecd377
+          subscriptionID: 20941d63-479d-40cb-8060-5a4b976ca0e9
+          tenantID: 61a70d37-ff63-45e3-bb68-f0edbf718ffd
+          resourceGroupName: iot-cust-domain
+          hostedZoneName: zack-dev.dev.iotdev-westpharma.com

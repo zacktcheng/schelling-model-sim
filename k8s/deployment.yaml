@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zack-dev
+  name: schelling-model-sim-deployment
+  labels:
+    app: schelling-model-sim
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: schelling-model-sim
+  template:
+    metadata:
+      labels:
+        app: schelling-model-sim
+    spec:
+      containers:
+      - name: schelling-model-sim
+        image: chengz02/schelling-model-sim:v0
+        ports:
+        - containerPort: 3000
