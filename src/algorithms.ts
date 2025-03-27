@@ -1,36 +1,31 @@
 function shuffleArray(arr: number[]) {
   if (arr.length >= 2) {
-   let i = arr.length - 1;
-   while (i > 0) {
-    const randI = Math.floor(Math.random() * i--);
-    [arr[i], arr[randI]] = [arr[randI], arr[i]];
-   } 
+    let i = arr.length - 1;
+    while (i > 0) {
+      const randI = Math.floor(Math.random() * i--);
+      [arr[i], arr[randI]] = [arr[randI], arr[i]];
+    }
   }
 }
 
 function reAssignTypes(community: number[][], typeCount: number) {
   const vacancies = getVacancies(community);
-  const s = new Set<string>();
-  for (const vacancy of vacancies) {
-    s.add(`${vacancy[0]} ${vacancy[1]}`);
-  }
-  const newCommunity = JSON.parse(JSON.stringify(community));
-  let i = 1;
-  for (let row = 0; row < newCommunity.length; row++) {
-    for (let col = 0; col < newCommunity[row].length; col++) {
-      if (!s.has(`${row} ${col}`)) {
-        newCommunity[row][col] = i % typeCount + 1;
-        i++;
-      }
-    }
-  }
-  return newCommunity;
+  const n = community.length;
+  const length = n ** 2;
+  const arr = Array.from({ length }, (_, i) => (i % typeCount) + 1);
+  shuffleArray(arr);
+  const matrix: number[][] = [];
+  for (let i = 0; i < n; i++) matrix.push(arr.slice(n * i, n * (i + 1)));
+  for (const vacancy of vacancies) matrix[vacancy[0]][vacancy[1]] = 0;
+  return matrix;
 }
 
 function initCommunity(typeCount: number, n: number) {
-  const length = typeCount > 0 ? n**2: 0;
-  const vacancyCount = Math.round(length  * .1);
-  const arr = Array.from({ length }, (_, i) => i < vacancyCount ? 0 : i % typeCount + 1);
+  const length = typeCount > 0 ? n ** 2 : 0;
+  const vacancyCount = Math.round(length * 0.1);
+  const arr = Array.from({ length }, (_, i) =>
+    i < vacancyCount ? 0 : (i % typeCount) + 1,
+  );
   shuffleArray(arr);
   const matrix: number[][] = [];
   for (let i = 0; i < n; i++) matrix.push(arr.slice(n * i, n * (i + 1)));
@@ -49,7 +44,12 @@ function getVacancies(community: number[][]) {
   return vacancies;
 }
 
-function relocate(row: number, col: number, vacancies: number[][], community: number[][]) {
+function relocate(
+  row: number,
+  col: number,
+  vacancies: number[][],
+  community: number[][],
+) {
   const vacancy = vacancies[Math.floor(Math.random() * vacancies.length)];
   community[vacancy[0]][vacancy[1]] = community[row][col];
   community[row][col] = 0;
@@ -58,12 +58,13 @@ function relocate(row: number, col: number, vacancies: number[][], community: nu
 }
 
 function getNeigbors(row: number, col: number, community: number[][]) {
-  const max = community.length - 1, min = 0;
+  const max = community.length - 1,
+    min = 0;
   const leftCol = col > 0 ? col - 1 : max;
   const rightCol = col < max ? col + 1 : min;
   const bottomRow = row > 0 ? row - 1 : max;
   const topRow = row < max ? row + 1 : min;
-  
+
   const topLeft = community[topRow][leftCol];
   const top = community[topRow][col];
   const topRight = community[topRow][rightCol];
@@ -81,7 +82,9 @@ function relocateAndCountDiffs(community: number[][], threshold: number) {
     for (let col = 0; col < community[row].length; col++) {
       const neighbors = getNeigbors(row, col, community);
       const home = community[row][col];
-      const fellowCount = neighbors.filter(neighbor => neighbor === home).length;
+      const fellowCount = neighbors.filter(
+        (neighbor) => neighbor === home,
+      ).length;
       const satisfactory = fellowCount / 8;
       if (satisfactory < threshold) {
         diffs++;
@@ -92,11 +95,8 @@ function relocateAndCountDiffs(community: number[][], threshold: number) {
   return diffs;
 }
 
-function runSchellingModel(
-  community: number[][],
-  threshold: number
-) {
-  const vacancyCount = Math.round(community.length**2 * .1); // equilibrium
+function runSchellingModel(community: number[][], threshold: number) {
+  const vacancyCount = Math.round(community.length ** 2 * 0.1); // equilibrium
   const snapshots = [JSON.parse(JSON.stringify(community))];
   let diffs = relocateAndCountDiffs(community, threshold);
   while (diffs > vacancyCount) {
@@ -107,8 +107,4 @@ function runSchellingModel(
   return snapshots;
 }
 
-export {
-  reAssignTypes,
-  initCommunity,
-  runSchellingModel,
-};
+export { reAssignTypes, initCommunity, runSchellingModel };
