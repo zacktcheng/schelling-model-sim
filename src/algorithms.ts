@@ -8,6 +8,25 @@ function shuffleArray(arr: number[]) {
   }
 }
 
+function reAssignTypes(community: number[][], typeCount: number) {
+  const vacancies = getVacancies(community);
+  const s = new Set<string>();
+  for (const vacancy of vacancies) {
+    s.add(`${vacancy[0]} ${vacancy[1]}`);
+  }
+  const newCommunity = JSON.parse(JSON.stringify(community));
+  let i = 1;
+  for (let row = 0; row < newCommunity.length; row++) {
+    for (let col = 0; col < newCommunity[row].length; col++) {
+      if (!s.has(`${row} ${col}`)) {
+        newCommunity[row][col] = i % typeCount + 1;
+        i++;
+      }
+    }
+  }
+  return newCommunity;
+}
+
 function initCommunity(typeCount: number, n: number) {
   const length = typeCount > 0 ? n**2: 0;
   const vacancyCount = Math.round(length  * .1);
@@ -89,6 +108,7 @@ function runSchellingModel(
 }
 
 export {
+  reAssignTypes,
   initCommunity,
   runSchellingModel,
 };
