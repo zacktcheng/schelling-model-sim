@@ -13,7 +13,9 @@ function App() {
   const [snapshotIdx, setSnapshotIdx] = useState(0);
   function handleMatrixLength(event: any) {
     setN(+event.target.value);
-    handleStartNew();
+    const newCommunity = initCommunity(typeCount, +event.target.value);
+    setSnapshots(runSchellingModel(newCommunity, threshold));
+    setSnapshotIdx(0);
   }
   function handleTypeCount(event: any) {
     setTypeCount(+event.target.value);
@@ -56,7 +58,7 @@ function App() {
             <FormControl
               labelText='Matrix Length:'
               outputText={n}
-              inputAttr={{ type: 'range', min: 4, max: 64, value: n, step: 1, onChange: handleMatrixLength,
+              inputAttr={{ type: 'range', min: 10, max: 64, value: n, step: 1, onChange: handleMatrixLength,
               }}
             />
             <FormControl
@@ -75,7 +77,7 @@ function App() {
               }}
             />
             <p className='mt-auto ml-auto text-xs text-gray-400'>
-              <a href="https://github.com/zacktcheng" target="_blank" className='flex gap-1 text-gray-400'>
+              <a href="https://github.com/zacktcheng" target="_blank" rel="noreferrer" className='flex gap-1 text-gray-400'>
                 zacktcheng
                 <img src={githubMark} alt='github-logo' style={{ opacity: .25 }} width={16} />
               </a>

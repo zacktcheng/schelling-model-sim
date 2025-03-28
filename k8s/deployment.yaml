@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: schelling-model-sim
-        image: chengz02/schelling-model-sim:v1
+        image: chengz02/schelling-model-sim:v3
         ports:
         - containerPort: 3000
